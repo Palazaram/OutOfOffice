@@ -44,6 +44,30 @@
 После чего у вас должна создаться база данных с названием, которое вы указали в строке подлкючение. 
 `База данных: SSMS.`
 
+## Роли и пользователи
+
+### Administrator
+
+Login: Administrator1
+Password: Admin@123
+
+### Project Manager
+
+Login: ProjectManager1
+Password: ProjMgr@123
+
+### HR Manager
+
+Login: HR_Manger1
+Password: HRMgr@123
+
+### Employee
+
+Login: Employee1
+Password: Emp@123
+
+Все новые зарегестрированные пользователи получают роль `Employee`.
+
 ## Работа приложения (с ролью Администратор)
 
 ### Стартовая страница 
