@@ -43,3 +43,25 @@
 Для создания базы данных нужно зайти в `Package Manager Console` `View --> Other Windows --> Package Manager Console`, обязательно выбрать проект `OutOfOffice.Persistence` в `Default project` и ввести команду `update-database`.
 После чего у вас должна создаться база данных с названием, которое вы указали в строке подлкючение. 
 `База данных: SSMS.`
+
+## Работа приложения (с ролью Администратор)
+
+### Стартовая страница 
+
+![image](https://github.com/Palazaram/OutOfOffice/assets/108758569/992db764-fa79-4f7e-ae4b-59edb838b375)
+
+### Раздел Employees
+
+![image](https://github.com/Palazaram/OutOfOffice/assets/108758569/d4694e5e-7808-4dfa-ae6e-ed0a7700aa1b)
+
+### Раздел Projects
+
+![image](https://github.com/Palazaram/OutOfOffice/assets/108758569/a8947e4f-e157-4fbb-a78e-297c5dc99496)
+
+### Раздел LeaveRequests
+
+![image](https://github.com/Palazaram/OutOfOffice/assets/108758569/138b8a9b-4ce2-4ecc-8015-4806cd907c1d)
+
+### Раздел ApproveRequests
+
+![image](https://github.com/Palazaram/OutOfOffice/assets/108758569/6cd0f479-9612-4118-a3b9-e6959ea6d305)
