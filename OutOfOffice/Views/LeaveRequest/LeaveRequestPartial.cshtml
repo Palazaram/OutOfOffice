@@ -1,0 +1,79 @@
+﻿@using OutOfOffice.Core.Models
+@model IEnumerable<LeaveRequestEntity>
+
+
+<table id="LeaveRequestsTable" class="table table-striped table-hover">
+
+    <thead>
+        <tr>
+            <th style="min-width: 80px;">№</th>
+            <th>Employee</th>
+            <th>Absence Reason</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Status</th>
+            <th class="text-center">Actions</th>
+        </tr>
+
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @{
+            int i = 1;
+        }
+
+        @foreach (var lr in Model)
+        {
+            <tr class="">
+                <td>@i</td>
+                <td>@lr.Employee.FullName</td>
+                <td>@lr.AbsenceReason</td>
+                <td>@lr.StartDate.ToShortDateString()</td>
+                <td>@lr.EndDate.ToShortDateString()</td>
+                <td>@lr.Status</td>
+                <td class="text-center">
+
+                    @if (User.IsInRole("Administrator") || User.IsInRole("Employee"))
+                    {
+                        @if (lr.Status != "Approved" && lr.Status != "Rejected" && lr.Status != "Submitted")
+                        {
+                            <a asp-action="LeaveRequestEdit" asp-controller="LeaveRequest" asp-route-id="@lr.Id" class="btn btn-primary">Edit</a>
+                        }
+                        @if (lr.Status == "New" || lr.Status == "Canceled")
+                        {
+                            <form asp-action="SubmitLeaveRequest" asp-controller="LeaveRequest" method="post" asp-route-id="@lr.Id" class="d-inline-block">
+                                <input type="submit" value="Submit" class="btn btn-secondary" />
+                            </form>
+                        }
+                        else if (lr.Status == "Submitted")
+                        {
+                            <form asp-action="CancelLeaveRequest" asp-controller="LeaveRequest" method="post" asp-route-id="@lr.Id" class="d-inline-block">
+                                <input type="submit" value="Cancel" class="btn btn-danger" />
+                            </form>
+                        }
+
+                    }
+
+                    <button class="btn btn-info text-white lr-info-btn" lr-id="@lr.Id">Info</button>
+
+                </td>
+            </tr>
+            i++;
+        }
+
+        
+           
+        
+    </tbody>
+
+</table>

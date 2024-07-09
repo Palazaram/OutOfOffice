@@ -1,0 +1,63 @@
+﻿@model OutOfOffice.Core.Models.ProjectEntity
+
+
+
+
+<div class="container" style="width: 500px;">
+    <h2>Adding the project</h2>
+
+    <form asp-action="create" asp-controller="project" enctype="multipart/form-data" class="needs-validation">
+
+        <div class="form-group mb-3">
+            <label asp-for="@Model.ProjectType" class="form-label fw-bold">Project Type</label>
+            <select asp-for="@Model.ProjectType" class="form-select" required>
+                <option value="" selected disabled>-- Select Project Type --</option>
+                <option value="IT Project">IT Project</option>
+                <option value="Corporate Project">Corporate Project</option>
+                <option value="Construction Projects">Construction Projects</option>
+            </select>
+            <span asp-validation-for="@Model.ProjectType" class="text-danger" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="@Model.StartDate" class="form-label fw-bold">Start Date</label>
+            <input asp-for="@Model.StartDate" class="form-control" required />
+            <span asp-validation-for="@Model.StartDate" class="text-danger" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="@Model.EndDate" class="form-label fw-bold">End Date</label>
+            <input asp-for="@Model.EndDate" class="form-control" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="@Model.ProjectManagerId" class="form-label fw-bold">Project Manager</label>
+            <select asp-for="@Model.ProjectManagerId" asp-items="ViewBag.ProjectManagers" class="form-select"></select>
+            <span asp-validation-for="@Model.ProjectManagerId" class="text-danger" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="@Model.Comment" class="form-label fw-bold">Comment</label>
+            <textarea asp-for="@Model.Comment" class="form-control" style="height: 200px;"></textarea>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="@Model.Status" class="form-label fw-bold">Status</label>
+            <select asp-for="@Model.Status" class="form-select" required>
+                <option value="" selected disabled>-- Select Status --</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+            </select>
+            <span asp-validation-for="@Model.Status" class="text-danger" />
+        </div>
+
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Create</button>
+        </div>
+    </form>
+</div>
+
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.5.1.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.17.0/jquery.validate.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.10/jquery.validate.unobtrusive.min.js"></script>

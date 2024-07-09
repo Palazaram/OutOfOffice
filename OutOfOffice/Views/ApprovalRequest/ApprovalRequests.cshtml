@@ -1,0 +1,123 @@
+﻿<style>
+    #ApprovalRequestInfoContainer {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+        padding: 20px;
+        z-index: 9999;
+        max-width: 80%;
+        max-height: 80%;
+        overflow-y: auto;
+    }
+</style>
+
+
+
+
+
+
+<div class="container">
+
+    <partial name="ApprovalRequestPartial" />
+
+
+    <div id="ApprovalRequestInfoContainer"></div>
+
+</div>
+
+
+@section Scripts {
+    <script type="text/javascript">
+
+        $(function () {
+
+            $('#ApprovalRequestsTable').DataTable({
+                responsive: true,
+                orderCellsTop: true,
+                columnDefs: [
+                    {
+                        targets: -1,
+                        orderable: false
+                    }
+                ],
+                initComplete: function () {
+                    var api = this.api();
+                    api.columns().every(function () {
+                        var column = this;
+
+                        if (column.index() === api.columns().count() - 1) {
+                            return;
+                        }
+
+                        var select = $('<select class="form-select" ><option value=""></option></select>')
+                            .appendTo($("#ApprovalRequestsTable thead tr:eq(1) th").eq(column.index()).empty())
+                            .on('change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+
+                                column
+                                    .search(val ? '^' + val + '$' : '', true, false)
+                                    .draw();
+                            });
+
+                        column.data().unique().sort().each(function (d, j) {
+                            if (d !== '') {
+                                select.append('<option value="' + d + '">' + d + '</option>');
+                            }
+                        });
+                    });
+                }
+                
+            });
+
+            $('#dt-length-0').addClass('me-2');
+
+            $('.ar-info-btn').click(function () {
+
+                let arId = $(this).attr('ar-id');
+
+                $('#ApprovalRequestInfoContainer').empty();
+                $('#ApprovalRequestInfoContainer').fadeIn();
+
+                $("#ApprovalRequestInfoContainer").load('@Url.Action("ApprovalRequestInfo", "ApprovalRequest")', { id: arId }, function () { });
+            });
+
+            $('body').on('click', '.close-btn', function () {
+
+                $('#ApprovalRequestInfoContainer').empty();
+                $('#ApprovalRequestInfoContainer').hide();
+
+            });
+
+            $('.ar-approve-btn').click(function () {
+
+                let arId = $(this).attr('ar-id');
+
+                $('#ApprovalRequestInfoContainer').empty();
+                $('#ApprovalRequestInfoContainer').fadeIn();
+
+                $("#ApprovalRequestInfoContainer").load('@Url.Action("ApproveRequestPartial", "ApprovalRequest")', { id: arId }, function () { });
+            });
+
+            $('.ar-reject-btn').click(function () {
+
+                let arId = $(this).attr('ar-id');
+
+                $('#ApprovalRequestInfoContainer').empty();
+                $('#ApprovalRequestInfoContainer').fadeIn();
+
+                $("#ApprovalRequestInfoContainer").load('@Url.Action("RejectRequestPartial", "ApprovalRequest")', { id: arId }, function () { });
+            });
+
+
+
+
+        });
+
+    </script>
+}

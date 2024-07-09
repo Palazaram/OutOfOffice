@@ -1,0 +1,68 @@
+﻿@model OutOfOffice.ViewModels.EmployeeViewModel
+
+<style>
+    .close-btn {
+        all: unset;
+        cursor: pointer;
+        color: #999;
+        font-size: 30px;
+    }
+
+        .close-btn:hover {
+            color: #333;
+        }
+    h4{
+        margin: 0;
+    }
+</style>
+
+
+<div class="container" style="width: 500px;">
+    
+
+    <div class="d-flex justify-content-between mb-3 align-items-center">
+
+        @if (string.IsNullOrEmpty(Model.Employee.FullName))
+        {
+            <h4>Assign an employee to projects.</h4>
+        }
+        else
+        {
+            <h4>Assign @Model.Employee.FullName to projects.</h4>
+        }
+
+        
+        <button class="close-btn" id="closeButton">
+            <span>&times;</span>
+        </button>
+    </div>
+
+    <form asp-action="AddProjectsToEmployee" asp-controller="employee" enctype="multipart/form-data">
+
+        <input type="hidden" asp-for="@Model.Employee.Id" />
+
+        @if (Model.Projects == null)
+        {
+            <p>There are no projects</p>
+        }
+        else
+        {
+            foreach (var proj in Model.Projects)
+            {
+                var isChecked = Model.Employee.AssignedProjects != null && Model.Employee.AssignedProjects.Any(ep => ep.Id == proj.Id);
+
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" name="SelectedProjects" value="@proj.Id" id="project_@proj.Id" @(isChecked ? "checked" : "")>
+                    <label class="form-check-label" for="project_@proj.Id">
+                        @proj.ProjectType
+                    </label>
+                </div>
+            }
+        }
+
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Assign</button>
+        </div>
+    </form>
+</div>

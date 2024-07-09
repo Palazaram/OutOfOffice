@@ -1,0 +1,70 @@
+﻿@model OutOfOffice.Core.Models.EmployeeEntity
+
+<style>
+    .close-btn {
+        all: unset;
+        cursor: pointer;
+        color: #999;
+        font-size: 30px;
+    }
+
+        .close-btn:hover {
+            color: #333;
+        }
+</style>
+
+<div class="container" style="width: 500px;">
+    
+
+    <div class="d-flex justify-content-between">
+        <h2>Project info</h2>
+        <button class="close-btn">
+            <span>&times;</span>
+        </button>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="@Model.FullName" class="form-label fw-bold">Full Name</label>
+        <input asp-for="@Model.FullName" class="form-control" disabled />
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="@Model.Subdivision" class="form-label fw-bold">Subdivision</label>
+        <input asp-for="@Model.Subdivision" class="form-control" disabled />
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="@Model.Position" class="form-label fw-bold">Position</label>
+        <input asp-for="@Model.Position" class="form-control" disabled />
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="@Model.Status" class="form-label fw-bold">Status</label>
+        <input asp-for="@Model.Status" class="form-control" disabled />
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="@Model.PeoplePartner" class="form-label fw-bold">People Partner</label>
+        <input asp-for="@Model.PeoplePartner.FullName" class="form-control" disabled />
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="@Model.OutOfOfficeBalance" class="form-label fw-bold">Out-of-Office Balance</label>
+        <input asp-for="@Model.OutOfOfficeBalance" class="form-control" disabled />
+    </div>
+
+    @if (!string.IsNullOrEmpty(@Model.PhotoPath))
+    {
+        <div id="PhotoContainer">
+            <p>
+                <span class="fw-bold">Current image</span> <br />
+                <div class="text-center">
+                    <img src="~/employeesPhotoes/@Model.PhotoPath" alt="Current image" class="" style="max-width: 200px; max-height: 200px;" />
+                </div>
+            </p>
+        </div>
+
+    }
+
+    
+</div>

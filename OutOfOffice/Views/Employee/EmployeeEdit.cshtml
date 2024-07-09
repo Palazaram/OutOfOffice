@@ -1,0 +1,133 @@
+﻿@model OutOfOffice.Core.Models.EmployeeEntity
+
+
+
+
+
+<div class="container" style="width: 500px;">
+    <h2>Editing the employee</h2>
+
+    <form asp-action="Edit" asp-controller="employee" asp-route-id="@Model.Id" enctype="multipart/form-data" class="needs-validation">
+
+        <input type="hidden" asp-for="@Model.PhotoPath" />
+        <input type="hidden" asp-for="@Model.Id" />
+
+        <div class="form-group mb-3">
+            <label asp-for="@Model.FullName" class="form-label fw-bold">Full Name</label>
+            <input asp-for="@Model.FullName" class="form-control" required />
+            <span asp-validation-for="@Model.FullName" class="text-danger" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="@Model.Subdivision" class="form-label fw-bold">Subdivision</label>
+            <select asp-for="@Model.Subdivision" class="form-select" required>
+                <option value="" selected disabled>-- Select Subdivision --</option>
+                <option value="Finance">Finance</option>
+                <option value="Marketing">Marketing</option>
+                <option value="IT Department">IT Department</option>
+            </select>
+            <span asp-validation-for="@Model.Subdivision" class="text-danger" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="@Model.Position" class="form-label fw-bold">Position</label>
+            <select asp-for="@Model.Position" class="form-select" required>
+                <option value="" selected disabled>-- Select Position --</option>
+                <option value="HR Manager">HR Manager</option>
+                <option value="Project Manager">Project Manager</option>
+                <option value="Developer">Developer</option>
+            </select>
+            <span asp-validation-for="@Model.Position" class="text-danger" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="@Model.Status" class="form-label fw-bold">Status</label>
+            <select asp-for="@Model.Status" class="form-select" required>
+                <option value="" selected disabled>-- Select Status --</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+            </select>
+            <span asp-validation-for="@Model.Status" class="text-danger" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="@Model.PeoplePartnerId" class="form-label fw-bold">People Partner</label>
+            <select asp-for="@Model.PeoplePartnerId" asp-items="ViewBag.PeoplePartners" class="form-select"></select>
+            <span asp-validation-for="@Model.PeoplePartnerId" class="text-danger" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="@Model.OutOfOfficeBalance" class="form-label fw-bold">Out-of-Office Balance</label>
+            <input asp-for="@Model.OutOfOfficeBalance" class="form-control" required />
+            <span asp-validation-for="@Model.OutOfOfficeBalance" class="text-danger" />
+        </div>
+
+        @if (!string.IsNullOrEmpty(@Model.PhotoPath))
+        {
+            <div id="PhotoContainer">
+                <p>
+                    <span class="fw-bold">Current image</span> <br />
+                    <div class="text-center">
+                        <img src="~/employeesPhotoes/@Model.PhotoPath" alt="Current image" class="" style="max-width: 200px; max-height: 200px;" />
+                    </div>
+                </p>
+            </div>
+            
+        }
+
+        <div class="form-group mb-3">
+            <label asp-for="@Model.Photo" class="form-label fw-bold">Photo</label>
+            <input asp-for="@Model.Photo" accept="image/*" class="form-control" type="file" />
+        </div>
+
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Edit</button>
+            @if (!string.IsNullOrEmpty(Model.PhotoPath))
+            {
+                <button id="RemovePhotoBtn" type="button" class="btn btn-danger">Remove current photo</button>
+            }
+        </div>
+    </form>
+</div>
+
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.5.1.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.17.0/jquery.validate.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.10/jquery.validate.unobtrusive.min.js"></script>
+
+@section Scripts {
+    <script type="text/javascript">
+
+        $(function () {
+
+            let employeeId = $('#Id').val();
+
+            $('#RemovePhotoBtn').click(function() {
+
+                $('#PhotoContainer').hide();
+                $('#RemovePhotoBtn').hide();
+                removePhoto(employeeId);
+            });
+
+
+            function removePhoto(employeeId) {
+                $.ajax({
+                    url: '@Url.Action("RemoveCurrentPhoto", "Employee")',
+                    type: 'POST',
+                    data: { id: employeeId },
+                    success: function (result) {
+                        
+                        alert("Photo removed successfully.");
+                        location.reload();
+
+                    },
+                    error: function (xhr, status, error) {
+                        alert("An error occurred: " + error);
+                    }
+                });
+            }
+
+        });
+
+    </script>
+}

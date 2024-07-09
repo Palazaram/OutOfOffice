@@ -1,0 +1,122 @@
+﻿<style>
+    #EmpContainer {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+        padding: 20px;
+        z-index: 9999;
+        max-width: 80%;
+        max-height: 80%;
+        overflow-y: auto;
+    }
+</style>
+
+
+
+
+
+
+<div class="container">
+    @if (User.IsInRole("Administrator") || User.IsInRole("HRManager"))
+    {
+        <div id="ButtonsContainer" class="float-end ">
+
+            <div>
+                <button class="btn btn-success" type="button"><a asp-action="EmployeeCreate" asp-controller="Employee" class="text-decoration-none text-white">Add</a></button>
+            </div>
+
+        </div>
+    }
+    
+
+    <partial name="EmployeePartial" />
+
+    <div id="EmpContainer"></div>
+
+</div>
+
+
+@section Scripts {
+    <script type="text/javascript">
+
+        $(function () {
+
+            
+
+            $('#EmployeesTable').DataTable({
+                responsive: true,
+                orderCellsTop: true,
+                columnDefs: [
+                    {
+                        targets: -1,
+                        orderable: false
+                    }
+                ],
+                initComplete: function () {
+                    var api = this.api();
+                    api.columns().every(function () {
+                        var column = this;
+
+                        if (column.index() === api.columns().count() - 1) {
+                            return;
+                        }
+
+                        var select = $('<select class="form-select" ><option value=""></option></select>')
+                            .appendTo($("#EmployeesTable thead tr:eq(1) th").eq(column.index()).empty())
+                            .on('change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+
+                                column
+                                    .search(val ? '^' + val + '$' : '', true, false)
+                                    .draw();
+                            });
+
+                        column.data().unique().sort().each(function (d, j) {
+                            if (d !== '') {
+                                select.append('<option value="' + d + '">' + d + '</option>');
+                            }
+                        });
+                    });
+                }
+                
+            });
+
+            $('#dt-length-0').addClass('me-2');
+
+            $('.emp-info-btn').click(function () {
+
+                let empId = $(this).attr('emp-id');
+
+                $('#EmpContainer').empty();
+                $('#EmpContainer').fadeIn();
+
+                $("#EmpContainer").load('@Url.Action("EmployeeInfo", "Employee")', { id: empId }, function () { });
+            });
+
+            $('body').on('click', '.close-btn', function () {
+
+                $('#EmpContainer').empty();
+                $('#EmpContainer').hide();
+
+            });
+
+            $('.add-proj-btn').click(function () {
+
+                let empId = $(this).attr('emp-id');
+
+                $('#EmpContainer').empty();
+                $('#EmpContainer').fadeIn();
+
+                $("#EmpContainer").load('@Url.Action("ProjectsList", "Employee")', { id: empId }, function () { });
+            });
+
+        });
+
+    </script>
+}

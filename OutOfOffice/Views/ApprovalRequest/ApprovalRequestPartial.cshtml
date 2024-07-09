@@ -1,0 +1,62 @@
+﻿@using OutOfOffice.Core.Models
+@model IEnumerable<ApprovalRequestEntity>
+
+
+<table id="ApprovalRequestsTable" class="table table-striped table-hover">
+
+    <thead>
+        <tr>
+            <th style="min-width: 80px;">№</th>
+            <th>Approver</th>
+            <th>Employee</th>
+            <th>Absence Reason</th>
+            <th>Status</th>
+            <th class="text-center">Actions</th>
+        </tr>
+
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @{
+            int i = 1;
+        }
+
+        @foreach (var ar in Model)
+        {
+            <tr class="">
+                <td>@i</td>
+                <td>@(ar.ApproverId.HasValue ? ar.Approver.FullName : "")</td>
+                <td>@ar.LeaveRequest.Employee.FullName</td>
+                <td>@ar.LeaveRequest.AbsenceReason</td>
+                <td>@ar.Status</td>
+
+                <td class="text-center">
+                    <button class="btn btn-info text-white ar-info-btn" ar-id="@ar.Id">Info</button>
+
+                    @if (ar.Status == "New")
+                    {
+                        <button class="btn btn-success text-white ar-approve-btn" ar-id="@ar.Id">Approve</button>
+                        <button class="btn btn-danger text-white ar-reject-btn" ar-id="@ar.Id">Reject</button>
+                    }
+                    
+
+                </td>
+            </tr>
+            i++;
+        }
+
+        
+           
+        
+    </tbody>
+
+</table>

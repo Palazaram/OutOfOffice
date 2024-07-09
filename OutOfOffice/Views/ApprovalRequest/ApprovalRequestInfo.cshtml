@@ -1,0 +1,59 @@
+﻿@model OutOfOffice.Core.Models.ApprovalRequestEntity
+
+<style>
+    .close-btn {
+        all: unset;
+        cursor: pointer;
+        color: #999;
+        font-size: 30px;
+    }
+
+        .close-btn:hover {
+            color: #333;
+        }
+</style>
+
+<div class="container" style="width: 500px;">
+    
+
+    <div class="d-flex justify-content-between">
+        <h2>Approve Request info</h2>
+        <button class="close-btn" id="closeButton">
+            <span>&times;</span>
+        </button>
+    </div>
+
+    <div class="form-group mb-3">
+        @if (Model.ApproverId.HasValue)
+        {
+            <label asp-for="@Model.Approver.FullName" class="form-label fw-bold">Approver</label>
+            <input asp-for="@Model.Approver.FullName" class="form-control" disabled />
+        }
+        else
+        {
+            <label class="form-label fw-bold">Approver</label>
+            <input class="form-control" disabled />
+        }
+
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="@Model.LeaveRequest.Employee.FullName" class="form-label fw-bold">Employee</label>
+        <input asp-for="@Model.LeaveRequest.Employee.FullName" class="form-control" disabled />
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="@Model.LeaveRequest.AbsenceReason" class="form-label fw-bold">Absence Reason</label>
+        <input asp-for="@Model.LeaveRequest.AbsenceReason" class="form-control" disabled />
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="@Model.Comment" class="form-label fw-bold">Comment</label>
+        <textarea asp-for="@Model.Comment" class="form-control" style="height: 150px;" disabled></textarea>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="@Model.Status" class="form-label fw-bold">Status</label>
+        <input asp-for="@Model.Status" class="form-control" disabled />
+    </div>
+</div>

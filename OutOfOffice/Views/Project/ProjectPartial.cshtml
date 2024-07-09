@@ -1,0 +1,72 @@
+﻿@using OutOfOffice.Core.Models
+@model IEnumerable<ProjectEntity>
+
+
+<table id="ProjectsTable" class="table table-striped table-hover">
+
+    <thead>
+        <tr>
+            <th style="min-width: 80px;">№</th>
+            <th>Project Type</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Project Manager</th>
+            <th>Status</th>
+            <th class="text-center">Actions</th>
+        </tr>
+
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @{
+            int i = 1; 
+        }
+
+        @foreach (var proj in Model)
+        {
+            <tr class="">
+                <td>@i</td>
+                <td>@proj.ProjectType</td>
+                <td>@proj.StartDate.ToShortDateString()</td>
+                <td>@(proj.EndDate.HasValue ? proj.EndDate.Value.ToShortDateString() : "")</td>
+                <td>@proj.ProjectManager.FullName</td>
+                <td>@proj.Status</td>
+                 
+               
+                <td class="text-center">
+
+
+                    @if (User.IsInRole("Administrator") || User.IsInRole("ProjectManager"))
+                    {
+                        <a asp-action="ProjectEdit" asp-controller="Project" asp-route-id="@proj.Id" class="btn btn-primary">Edit</a>
+
+                        @if (proj.Status == "Active")
+                        {
+                            <form asp-action="Deactivate" asp-controller="Project" method="post" asp-route-id="@proj.Id" class="d-inline-block">
+                                <input type="submit" value="Deactivate" class="btn btn-danger" />
+                            </form>
+                        }
+                    }
+
+                    <button class="btn btn-info text-white proj-info-btn" proj-id="@proj.Id">Info</button>
+                </td>
+            </tr>
+            i++;
+        }
+
+        
+           
+        
+    </tbody>
+
+</table>

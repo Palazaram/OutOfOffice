@@ -1,0 +1,94 @@
+﻿@model OutOfOffice.Core.Models.LeaveRequestEntity
+
+
+
+
+<div class="container" style="width: 500px;">
+    <h2>Editing the leave request</h2>
+
+    <form asp-action="edit" asp-controller="LeaveRequest" asp-route-id="@Model.Id" enctype="multipart/form-data" class="needs-validation">
+
+        <div class="form-group mb-3">
+            <label asp-for="@Model.EmployeeId" class="form-label fw-bold">Employee</label>
+            <select asp-for="@Model.EmployeeId" asp-items="ViewBag.Employees" class="form-select"></select>
+            <span asp-validation-for="@Model.EmployeeId" class="text-danger" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="@Model.AbsenceReason" class="form-label fw-bold">AbsenceReason</label>
+            <select asp-for="@Model.AbsenceReason" class="form-select" required>
+                <option value="" selected disabled>-- Select Absence Reason --</option>
+                <option value="Disease">Disease</option>
+                <option value="Family emergency">Family emergency</option>
+                <option value="Doctor appointment">Doctor appointment</option>
+                <option value="Other">Other</option>
+            </select>
+            <span asp-validation-for="@Model.AbsenceReason" class="text-danger" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="@Model.StartDate" class="form-label fw-bold">Start Date</label>
+            <input asp-for="@Model.StartDate" class="form-control" required />
+            <span asp-validation-for="@Model.StartDate" class="text-danger" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="@Model.EndDate" class="form-label fw-bold">End Date</label>
+            <input asp-for="@Model.EndDate" class="form-control" required />
+            <span asp-validation-for="@Model.EndDate" class="text-danger" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="@Model.Comment" class="form-label fw-bold">Comment</label>
+            <textarea asp-for="@Model.Comment" class="form-control" style="height: 200px;"></textarea>
+        </div>
+
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Edit</button>
+        </div>
+    </form>
+</div>
+
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.5.1.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.17.0/jquery.validate.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.10/jquery.validate.unobtrusive.min.js"></script>
+
+
+@section Scripts {
+    <script type="text/javascript">
+
+        $(function () {
+            $('form').on('submit', function (event) {
+                event.preventDefault();
+
+                const employeeId = $('#EmployeeId').val();
+                const startDateInput = $('input[name="StartDate"]');
+                const endDateInput = $('input[name="EndDate"]');
+                const startDate = new Date(startDateInput.val());
+                const endDate = new Date(endDateInput.val());
+
+                if (endDate < startDate) {
+                    alert('End Date must be greater than or equal to Start Date.');
+                } else {
+                    $.ajax({
+                        url: '@Url.Action("CheckDaysOff", "LeaveRequest")',
+                        type: 'GET',
+                        data: { id: employeeId, startDate: startDate.toISOString(), endDate: endDate.toISOString() },
+                        success: function (result) {
+                            if (result === false) {
+                                alert('The employee does not have enough days on balance for the requested period of absence.');
+                            } else {
+                                $('form').off('submit').submit();
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            alert("An error occurred: " + error);
+                        }
+                    });
+                }
+            });
+        });
+
+    </script>
+}

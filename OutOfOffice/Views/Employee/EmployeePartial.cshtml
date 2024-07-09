@@ -1,0 +1,78 @@
+﻿@using OutOfOffice.Core.Models
+@model IEnumerable<EmployeeEntity>
+
+
+<table id="EmployeesTable" class="table table-striped table-hover">
+
+    <thead>
+        <tr>
+            <th style="min-width: 80px;">№</th>
+            <th>Full Name</th>
+            <th>Subdivision</th>
+            <th>Position</th>
+            <th>Status</th>
+            <th>People Partner</th>
+            <th style="max-width: 150px;">Out-of-Office Balance</th>
+            <th class="text-center">Actions</th>
+        </tr>
+
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @{
+            int i = 1; 
+        }
+
+        @foreach (var emp in Model)
+        {
+            <tr class="">
+                <td>@i</td>
+                <td>@emp.FullName</td>
+                <td>@emp.Subdivision</td>
+                <td>@emp.Position</td>
+                <td>@emp.Status</td>
+                <td>@(emp.PeoplePartnerId == null ? "" : emp.PeoplePartner.FullName)</td>
+                <td class="pe-4">@emp.OutOfOfficeBalance</td>
+                <td class="text-center">
+
+                    @if (User.IsInRole("Administrator") || User.IsInRole("HRManager"))
+                    {
+                        <a asp-action="EmployeeEdit" asp-controller="Employee" asp-route-id="@emp.Id" class="btn btn-primary">Edit</a>
+                        @if (emp.Status == "Active")
+                        {
+                            <form asp-action="Deactivate" asp-controller="Employee" method="post" asp-route-id="@emp.Id" class="d-inline-block">
+                                <input type="submit" value="Deactivate" class="btn btn-danger" />
+                            </form>
+                        }
+                    }
+
+                    @if (User.IsInRole("Administrator") || User.IsInRole("ProjectManager"))
+                    {
+                        <button class="btn btn-info text-white add-proj-btn" emp-id="@emp.Id">Add Project</button>
+                    }
+
+                    
+                    <button class="btn btn-info text-white emp-info-btn" emp-id="@emp.Id">Info</button>
+
+                </td>
+            </tr>
+            i++;
+        }
+
+        
+           
+        
+    </tbody>
+
+</table>
