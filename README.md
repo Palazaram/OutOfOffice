@@ -38,7 +38,7 @@
 
 ## Запуск приложения
 
-Для того, чтобы запустить приложение нужно поменять строку подлкючения к базе данным в файле `OutOfOffice --> appsettings.json` и `OutOfOffice --> appsettings.Development.json`.
+Для того, чтобы запустить приложение нужно поменять строку подлкючения к базе данным в файле `OutOfOffice --> appsettings.Development.json`.
 
 Для создания базы данных нужно зайти в `Package Manager Console` `View --> Other Windows --> Package Manager Console`, обязательно выбрать проект `OutOfOffice.Persistence` в `Default project` и ввести команду `update-database`.
 После чего у вас должна создаться база данных с названием, которое вы указали в строке подлкючение. 
